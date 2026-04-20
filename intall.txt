@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed --name ClipboardFlash --icon=icon.ico --add-data "icon.ico;." --add-data "icon.png;." main.py
