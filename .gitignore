@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+venv/
+env/
+.venv/
+
+# Logs (runtime log lives in %APPDATA%\ClipboardFlash, but ignore any local copies)
+*.log
+clipflash.log
+clipboard_flash.log
+
+# PyInstaller build output
+build/
+dist/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
