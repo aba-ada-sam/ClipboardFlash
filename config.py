@@ -41,10 +41,12 @@ class Config:
         """Load configuration from file."""
         try:
             if self.config_file.exists():
-                with open(self.config_file, "r") as f:
+                with open(self.config_file, "r", encoding="utf-8-sig") as f:
                     saved_config = json.load(f)
-                    # Merge with defaults to handle new settings
-                    self._config.update(saved_config)
+                if not isinstance(saved_config, dict):
+                    raise ValueError("config is not a JSON object")
+                # Merge with defaults to handle new settings
+                self._config.update(saved_config)
         except Exception as e:
             print(f"Error loading config: {e}")
             
@@ -52,8 +54,10 @@ class Config:
         """Save configuration to file."""
         try:
             self.config_dir.mkdir(parents=True, exist_ok=True)
-            with open(self.config_file, "w") as f:
+            tmp = self.config_file.with_name(self.config_file.name + ".tmp")
+            with open(tmp, "w", encoding="utf-8") as f:
                 json.dump(self._config, f, indent=2)
+            os.replace(tmp, self.config_file)  # atomic: a crash can't leave a truncated file
         except Exception as e:
             print(f"Error saving config: {e}")
             
