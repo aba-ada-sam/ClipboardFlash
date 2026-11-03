@@ -15,6 +15,7 @@ from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QColor
 
 from config import Config
+from winutil import shortcut_script
 from styles import Styles
 
 
@@ -451,15 +452,7 @@ class SettingsDialog(QDialog):
             arguments = f'"{Path(__file__).parent / "launch.pyw"}"'
 
         # Use PowerShell to create the .lnk — always available on Windows
-        ps_script = (
-            "$ws = New-Object -ComObject WScript.Shell; "
-            f"$s = $ws.CreateShortcut('{startup_path}'); "
-            f"$s.TargetPath = '{target}'; "
-            f"$s.Arguments = '{arguments}'; "
-            f"$s.WorkingDirectory = '{working_dir}'; "
-            "$s.Description = 'Clipboard Flash'; "
-            "$s.Save()"
-        )
+        ps_script = shortcut_script(startup_path, target, arguments, working_dir)
         try:
             subprocess.run(
                 ["powershell", "-NoProfile", "-Command", ps_script],
